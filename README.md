@@ -1,0 +1,1 @@
+# blog-2016-06-page-object-pattern
