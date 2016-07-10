@@ -4,7 +4,7 @@ export default {
   devtool: 'eval',
   entry: './src/index',
   output: {
-    path: path.join(__dirname, '../resources/static'),
+    path: path.join(__dirname, '../resources/static/dist'),
     filename: 'bundle.js',
     publicPath: '/static/',
   },

@@ -4,15 +4,19 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("com.moowork.gradle:gradle-node-plugin:0.13")
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
+apply plugin: 'com.moowork.node'
 
 jar {
 	baseName = 'blog-2016-06-page-object-pattern'
@@ -31,10 +35,16 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
 
-
-eclipse {
-	classpath {
-		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-	}
+task buildUi(type: NodeTask) {
+    script = file('src/main/ui/node_modules/webpack/bin/webpack.js')
+    execOverrides {
+        it.workingDir = 'src/main/ui'
+    }
 }
+
+node {
+    nodeModulesDir = file("src/main/ui")
+}
+
+compileJava.dependsOn 'buildUi'
+buildUi.dependsOn 'npmInstall'
