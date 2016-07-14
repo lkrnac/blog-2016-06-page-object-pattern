@@ -34,17 +34,31 @@ public class TodoAppTest {
     }
 
     @Test
-    public void testCreateToDos() {
+    public void testCreateTodos() {
         // GIVEN
-        new TodoPageObject(driver)
-            .get()
+        new TodoPageObject(driver).get()
 
             // WHEN
             .addTodo("testTodo1")
             .addTodo("testTodo2")
 
             // THEN
-            .verifyTodoShown("testTodo1")
-            .verifyTodoShown("testTodo2");
+            .verifyTodoShown("testTodo1", false)
+            .verifyTodoShown("testTodo2", false);
+    }
+
+    @Test
+    public void testCompleteTodo() {
+        // GIVEN
+        new TodoPageObject(driver).get()
+            .addTodo("testTodo1")
+            .addTodo("testTodo2")
+
+            // WHEN
+            .clickOnTodoItem("testTodo1")
+
+            // THEN
+            .verifyTodoShown("testTodo1", true)
+            .verifyTodoShown("testTodo2", false);
     }
 }

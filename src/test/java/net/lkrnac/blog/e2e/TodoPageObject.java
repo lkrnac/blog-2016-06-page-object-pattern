@@ -7,8 +7,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static java.lang.String.format;
+import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
 
 /**
  * Created by: Lubos Krnac
@@ -37,8 +39,25 @@ public class TodoPageObject {
         return this;
     }
 
-    public TodoPageObject verifyTodoShown(String todo) {
-        assertNotNull(driver.findElement(By.xpath(format("//*[text()='%s']", todo))));
+    public TodoPageObject clickOnTodoItem(String todoItem) {
+        findTodo(todoItem).click();
         return this;
+    }
+
+    public TodoPageObject verifyTodoShown(String todoItem, boolean expectedStrikethrough) {
+        WebElement todoElement = findTodo(todoItem);
+        assertNotNull(todoElement);
+        boolean actualStrikethrough = todoElement.getAttribute("style").contains("text-decoration: line-through;");
+        assertEquals(expectedStrikethrough, actualStrikethrough);
+        return this;
+    }
+
+    public TodoPageObject verifyTodoNotShown(String todoItem) {
+        assertNull(findTodo(todoItem));
+        return this;
+    }
+
+    private WebElement findTodo(String todoItem) {
+        return driver.findElement(By.xpath(format("//*[text()='%s']", todoItem)));
     }
 }
