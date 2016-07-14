@@ -9,10 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static java.lang.String.format;
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 /**
