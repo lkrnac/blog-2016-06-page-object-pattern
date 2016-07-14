@@ -61,4 +61,53 @@ public class TodoAppTest {
             .verifyTodoShown("testTodo1", true)
             .verifyTodoShown("testTodo2", false);
     }
+
+    @Test
+    public void testSelectActive() {
+        // GIVEN
+        new TodoPageObject(driver).get()
+            .addTodo("testTodo1")
+            .addTodo("testTodo2")
+            .clickOnTodoItem("testTodo1")
+
+            // WHEN
+            .selectActive()
+
+            // THEN
+            .verifyTodoNotShown("testTodo1")
+            .verifyTodoShown("testTodo2", false);
+    }
+
+    @Test
+    public void testSelectCompleted() {
+        // GIVEN
+        new TodoPageObject(driver).get()
+            .addTodo("testTodo1")
+            .addTodo("testTodo2")
+            .clickOnTodoItem("testTodo1")
+
+            // WHEN
+            .selectCompleted()
+
+            // THEN
+            .verifyTodoShown("testTodo1", true)
+            .verifyTodoNotShown("testTodo2");
+    }
+
+    @Test
+    public void testSelectAll() {
+        // GIVEN
+        new TodoPageObject(driver).get()
+            .addTodo("testTodo1")
+            .addTodo("testTodo2")
+            .clickOnTodoItem("testTodo1")
+            .selectCompleted()
+
+            // WHEN
+            .selectAll()
+
+            // THEN
+            .verifyTodoShown("testTodo1", true)
+            .verifyTodoShown("testTodo2", false);
+    }
 }

@@ -6,10 +6,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 import static java.lang.String.format;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -40,12 +43,12 @@ public class TodoPageObject {
     }
 
     public TodoPageObject clickOnTodoItem(String todoItem) {
-        findTodo(todoItem).click();
+        findElementWithText(todoItem).click();
         return this;
     }
 
     public TodoPageObject verifyTodoShown(String todoItem, boolean expectedStrikethrough) {
-        WebElement todoElement = findTodo(todoItem);
+        WebElement todoElement = findElementWithText(todoItem);
         assertNotNull(todoElement);
         boolean actualStrikethrough = todoElement.getAttribute("style").contains("text-decoration: line-through;");
         assertEquals(expectedStrikethrough, actualStrikethrough);
@@ -53,11 +56,34 @@ public class TodoPageObject {
     }
 
     public TodoPageObject verifyTodoNotShown(String todoItem) {
-        assertNull(findTodo(todoItem));
+        assertTrue(findElementsWithText(todoItem).isEmpty());
         return this;
     }
 
-    private WebElement findTodo(String todoItem) {
-        return driver.findElement(By.xpath(format("//*[text()='%s']", todoItem)));
+    public TodoPageObject selectAll() {
+        findElementWithText("All").click();
+        return this;
+    }
+
+    public TodoPageObject selectActive() {
+        findElementWithText("Active").click();
+        return this;
+    }
+
+    public TodoPageObject selectCompleted() {
+        findElementWithText("Completed").click();
+        return this;
+    }
+
+    private WebElement findElementWithText(String text) {
+        return driver.findElement(getConfitionForText(text));
+    }
+
+    private List<WebElement> findElementsWithText(String text) {
+        return driver.findElements(getConfitionForText(text));
+    }
+
+    private By getConfitionForText(String text) {
+        return By.xpath(format("//*[text()='%s']", text));
     }
 }
