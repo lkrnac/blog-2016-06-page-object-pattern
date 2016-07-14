@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Blog201606PageObjectPatternApplication {
+public class TodoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Blog201606PageObjectPatternApplication.class, args);
+		SpringApplication.run(TodoApplication.class, args);
 	}
 }
